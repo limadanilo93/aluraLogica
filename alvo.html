@@ -1,0 +1,80 @@
+<canvas width="600" height="400"></canvas>
+
+<script>
+
+    var tela = document.querySelector('canvas');
+    var pincel = tela.getContext('2d');
+    var pontos = 0;
+    var tent = 0;
+    var xa;
+    var ya;
+    pincel.fillStyle = 'lightgray';
+    pincel.fillRect(0, 0, 600, 400);
+
+    var raio = 10;
+
+    function desenhaCirculo(x, y, raio, cor) {
+
+        pincel.fillStyle = cor;
+        pincel.beginPath();
+        pincel.arc(x, y, raio, 0, 2 * Math.PI);
+        pincel.fill();
+    }
+    function alvo(x, y){
+    desenhaCirculo(x,y, raio + 20, 'red');
+    desenhaCirculo(x,y, raio + 10, 'white');
+    desenhaCirculo(x,y, raio, 'red');
+   
+    
+    }
+    
+    function dispara(evento) {
+
+        var xi = evento.pageX - tela.offsetLeft;
+        var yi = evento.pageY - tela.offsetTop;
+        if (tent<10){
+            if ((xa-raio) <= xi && xi <= (xa+raio) && (ya-raio) <= yi&& yi <= (ya+raio)){
+           pontos = pontos + 20;
+           tent++;
+            }
+            else if ((xa-2*raio) <= xi && xi <= (xa+2*raio) && (ya-2*raio) <= yi&& yi <= (ya+2*raio)){
+           pontos = pontos + 10;
+           tent++;
+            }
+            else if ((xa-3*raio)<= xi && xi <= (xa+3*raio) && (ya-3*raio)<= yi&& yi <= (ya+3*raio)){
+           pontos = pontos + 5;
+           tent++;
+            }
+            else {
+                tent++;
+            }
+            if (tent == 10) {
+                alert('Sua pontuação é ' + pontos);
+            }
+        
+        }
+        else {
+             tent = 0;
+             pontos = 0;
+    }
+    }
+    function aleatorio(maximo){
+        return Math.floor(Math.random()*maximo);
+                
+
+    }
+    function limpa(){
+    pincel.clearRect(0, 0, 600, 400);
+    }
+    function atualiza(){
+    limpa();
+    xa = aleatorio(600);
+    ya = aleatorio(400);
+    alvo(xa,ya);
+    }
+    setInterval(atualiza, 800);
+    console.log(tent);
+    console.log(pontos);
+    tela.onclick = dispara;
+
+</script>

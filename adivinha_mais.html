@@ -1,0 +1,53 @@
+<meta charset="UTF-8">
+
+<input/>
+<button>Compare com o número que estou pensando!</button>
+
+<script>
+	function sorteio () {
+		return Math.round(Math.random()*10)
+	}
+	function sorteionum(quant){
+		var segredos =[];
+		var i = 1;
+		while  (i<=quant){
+			var aleatorio = sorteio();
+			var achou = false;
+			for (var h = 0; h < segredos.length; h++) {
+				if (segredos[h]==aleatorio){
+					achou = true;
+					break;
+				}
+			}
+			if (achou == false){
+				segredos.push(aleatorio);
+				i++;
+			
+			}
+			
+		}
+		console.log(segredos)
+		return segredos;
+	}
+ 	var segredos = sorteionum(parseInt(prompt("Digite de 1-5")));
+	
+	var input = document.querySelector("input");
+
+	function verifica() {
+		var achou = false;
+		for(i=0; i<segredos.length; i++)
+	    if(segredos[i] == input.value) {
+	        alert("Parabéns! Você acertou o número secreto");
+			achou = true;
+			break;
+	    }
+	    if (achou == false){
+			alert("Infelizmente você errou!");
+		}
+	    
+	    
+	}
+    
+    var button = document.querySelector("button");
+	button.onclick = verifica;
+</script>
