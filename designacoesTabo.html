@@ -1,0 +1,205 @@
+<meta charset="UTF-8">
+<h1 style="text-align:center">Designações mecânicas</h1>
+<br>
+<input placeholder="Indicadores" id="audioVideo"> 
+<button type="button" style="width: 100px; height: 15px text-align: center"  id="avEntra">ENTRAR</button>
+<br>
+<input placeholder="Leitores da Sentinela" id="leitoresSentinela">
+<button type="button" style="width: 100px; height: 15px text-align: center"  id="lSEntra">ENTRAR</button>
+<br>
+<input placeholder="Presidentes" id="presidentes">
+<button type="button" style="width: 100px; height: 15px text-align: center"  id="pEntra">ENTRAR</button>
+<br>
+Data Inicial: <input placeholder="Data" id="data" type="date" timezone="UTC-3">
+<br>
+<button type="button" style="width: 150px; height: 20px text-align: center"  id="dEntra">GERAR</button>
+<button type="button" style="width: 150px; height: 20px text-align: center"  id="limpa">LIMPAR</button>
+<br><br>
+<canvas width= "800" height="620"></canvas>
+<br>
+
+
+<script>
+    //Variavéis
+    let tela = document.querySelector('canvas');
+    let pincel = tela.getContext('2d');
+    let botaoLimpa = document.getElementById('limpa');
+    let botaoAV = document.getElementById('avEntra');
+    let pessoasAV = [];
+    let botaoLeit = document.getElementById('lSEntra');
+    let pessoasLeitores = [];
+    let contaLeitores = 0;
+    let botaoPres = document.getElementById('pEntra');
+    let pessoasPresidentes=[];
+    let contaPresidentes = 0;
+    let botaoData = document.getElementById('dEntra')
+    let data;
+    let dataFormatada;
+    let telaWidth = 800;
+    let telaHeight = 620;
+    let nomeAV = "";
+    let nomeLe = "";
+    let nomePr = "";
+    let inicio = 140;
+    
+    
+   //Funções internas
+    function carregaAV(){
+        let audioVideo = document.getElementById('audioVideo');
+        pessoasAV.push(audioVideo.value);
+        console.log(pessoasAV);
+        audioVideo.value ="";
+        contaAV++;
+    }
+    function carregaLeitores(){
+        let leitoresSentinela = document.getElementById('leitoresSentinela');
+        pessoasLeitores.push(leitoresSentinela.value);
+        console.log(pessoasLeitores);
+        leitoresSentinela.value ="";
+        contaLeitores++;
+    }
+    function carregaPresidentes(){
+        let presidentes = document.getElementById('presidentes');
+        pessoasPresidentes.push(presidentes.value);
+        console.log(pessoasPresidentes)
+        presidentes.value ="";
+        contaPresidentes++;
+    }
+    function carregaData(){
+        let dataEl = document.getElementById('data');
+        data = new Date(dataEl.value)
+        data.setDate(data.getDate()+1);
+        dataFormatada = data.toLocaleDateString('pt-BR', {timezone: 'UTC-3'});
+        
+    }
+    function limparTudo(){
+    pessoasAV = [];
+    contaAV = 0;
+    pessoasLeitores = [];
+    contaLeitores = 0;
+    pessoasPresidentes=[];
+    contaPresidentes = 0;
+    data ='';
+    dataFormatada = '';
+    nomeAV = "";
+    nomeLe = "";
+    nomePr = "";
+    inicio = 140;
+    pincel.clearRect(0,0,800, 620);
+    }
+    //Funções Gráficas
+    function desenhaCelula(xi, yi, xSize, ySize, color) {
+        pincel.fillStyle=color;
+        pincel.fillRect(xi, yi, xSize, ySize);
+        pincel.rect(xi, yi, xSize, ySize);
+        pincel.strokeStyle="black";
+        pincel.lineWidth = 1;
+        pincel.stroke();
+    
+    
+    }
+    function escreveCelula(texto, fonte, corTexto, centro, base) {
+        pincel.fillStyle= corTexto;
+        pincel.font = fonte;
+        pincel.textAlign = "center";
+        pincel.fillText(texto, centro, base);
+    }
+    function colunaDatas(){
+        var iC = 0;
+        var cores = ["white", "#FBE0DA"];
+        var linha = 0;
+        for (i = 100; i < (telaHeight-20); i= i+40){
+            for (j = 0; j < telaWidth; j = j + 200){
+                desenhaCelula(j, i, 200, 40, cores[iC])
+                
+                }
+            iC++;
+            if (iC>1){
+                iC=0
+                }
+            }
+        
+        data.setDate(data.getDate());
+        dataFormatada = data.toLocaleDateString('pt-BR', {timezone: 'UTC-3'});
+        escreveCelula('Semana de ' + dataFormatada, "bold 16px Arial", "Black", 100 , inicio+30);
+        for (i = inicio+40; i < (telaHeight-20); i= i+40){
+            data.setDate(data.getDate()+7);
+            dataFormatada = data.toLocaleDateString('pt-BR', {timezone: 'UTC-3'});
+            escreveCelula('Semana de ' + dataFormatada, "bold 16px Arial", "Black", 100 , i+30);
+            linha++;
+        }
+    }
+   
+  
+    function colunaAV() {
+        let nAV = 0;
+        let nLe = 0;
+        let nPr = 0;
+        if (pessoasAV.length != 0 && pessoasLeitores.length != 0 && pessoasPr.length != 0) {
+    
+            for (iN = inicio; iN < (telaHeight-20); iN= iN+40){
+            nomeAV = pessoasAV[nAV];
+            escreveCelula(nomeAV, "16px Arial", "Black", 300 , iN+30);
+            if (nAV==(pessoasAV.length-1)){
+                nAV = 0;
+            }
+            else {
+                nAV++;
+            }
+        }
+        
+            for (iN = inicio; iN < (telaHeight-20); iN= iN+40){
+            nomePr = pessoasPresidentes[nPr];
+            escreveCelula(nomePr, "16px Arial", "Black", 700 , iN+30);
+            nomeLe = pessoasLeitores[nLe];
+                if (nomePr==nomeLe && nLe==(pessoasLeitores.length-1)){
+                nLe= 0
+                }
+                else if (nomePr==nomeLe){
+                nLe++
+                }
+            nomeLe = pessoasLeitores[nLe];
+            escreveCelula(nomeLe, "16px Arial", "Black", 500 , iN+30);
+                if (nPr==(pessoasPresidentes.length-1)){
+                nPr = 0;
+                }
+                else {
+                nPr++;
+                }
+                if (nLe==(pessoasLeitores.length-1)){
+                nLe = 0;
+                }
+                else {
+                nLe++;
+                }
+            }
+        }
+        else {
+            alert ('Preencha nomes em todos');
+        }
+        
+    }
+   //Gerar Tabela
+    function gerar(){
+       carregaData();
+        console.log(dataFormatada);
+        console.log(contaAV);
+        desenhaCelula(0, 0, 800, 100, 'red')
+        escreveCelula("DESIGNAÇÕES", 'bold 50px Arial', 'green', (telaWidth/2), 70);
+        colunaDatas();
+        escreveCelula('SEMANAS', "bold 18px Arial", "Black", 100 , 130);
+        escreveCelula('AUDIO/VIDEO', "bold 17px Arial", "Black", 300 , 130);
+        escreveCelula('LEITOR SENTINELA', "bold 17px Arial", "Black", 500 , 130);
+        escreveCelula('PRESIDENTE', "bold 17px Arial", "Black", 700 , 130);
+        colunaAV();
+        
+        
+    }
+    //Ações
+    botaoAV.onclick = carregaAV;
+    botaoPres.onclick = carregaPresidentes;
+    botaoLeit.onclick = carregaLeitores;
+    botaoData.onclick = gerar;
+    botaoLimpa.onclick = limparTudo;
+    
+</script>
