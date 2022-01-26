@@ -1,0 +1,24 @@
+{
+  "name": "Logica",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/limadanilo93/aluraLogica.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/limadanilo93/aluraLogica/issues"
+  },
+  "homepage": "https://github.com/limadanilo93/aluraLogica#readme",
+  "dependencies": {
+    "csv-parser": "^3.0.0",
+    "random-words": "^1.1.2"
+  }
+}
